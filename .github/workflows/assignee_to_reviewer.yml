@@ -13,6 +13,7 @@ jobs:
           # assignee を reviewer としてアサインする
           # assignee を取得
           assignee=$(gh pr view ${{ github.event.pull_request.number }} --json assignees | jq -r '.assignees[].login')
+          echo $assignee
           
           gh api \
             --method POST \

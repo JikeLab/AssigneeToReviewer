@@ -13,14 +13,17 @@ jobs:
           # assignee を reviewer としてアサインする
           # assignee を取得
           assignee=$(gh pr view ${{ github.event.pull_request.number }} --json assignees | jq -r '.assignees[].login')
+          echo "assignee: $assignee"
+          echo "json: $(gh pr view 1 --json assignees)"
+          echo "view: $(gh pr view 1)"
           
           gh api \
             --method POST \
             -H "Accept: application/vnd.github+json" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
-            /repos/Nikkei/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/requested_reviewers \
-            -f "reviewers[]=$assignee"
+            /repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/requested_reviewers \
+            -f "reviewers[]=a-jike3"
 
         env:
-          GH_TOKEN: ${{ secrets.GHUB_ACCESS_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
           PR_NUMBER: ${{ github.event.pull_request.number }}

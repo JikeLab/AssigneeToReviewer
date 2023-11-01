@@ -1,0 +1,26 @@
+name: assignee_to_reviewer
+
+on:
+  pull_request:
+    types: [ assigned ]
+
+jobs:
+  add-reviewer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - run: |
+          # assignee を reviewer としてアサインする
+          # assignee を取得
+          assignee=$(gh pr view ${{ github.event.pull_request.number }} --json assignees | jq -r '.assignees[].login')
+          
+          gh api \
+            --method POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            /repos/Nikkei/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/requested_reviewers \
+            -f "reviewers[]=$assignee"
+
+        env:
+          GH_TOKEN: ${{ secrets.GHUB_ACCESS_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}

@@ -20,7 +20,7 @@ jobs:
             -H "Accept: application/vnd.github+json" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
             /repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/requested_reviewers \
-            -f "reviewers[]=$assignee"
+            -f "reviewers[]=a-jike3"
 
         env:
           GH_TOKEN: ${{ github.token }}

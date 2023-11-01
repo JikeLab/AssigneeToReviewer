@@ -22,5 +22,5 @@ jobs:
             -f "reviewers[]=$assignee"
 
         env:
-          GH_TOKEN: ${{ secrets.GHUB_ACCESS_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
